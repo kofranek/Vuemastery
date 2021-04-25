@@ -58,6 +58,8 @@ app.component('product-display', {
         <!-- solution -->
       </div>
     </div>
+    <review-list v-if="reviews.length" :reviews="reviews"></review-list>
+    <review-form @review-submitted="addReview"></review-form> 
   </div>
   `,
 
@@ -73,23 +75,23 @@ app.component('product-display', {
       variants: [
         { id: 2234, color: 'green', image: './assets/socks_green.jpg', quantity: 50 },
         { id: 2235, color: 'blue', image: './assets/socks_blue.jpg', quantity: 0 }
-      ]
+      ],
+      reviews: []
     }
   },
   methods: {
     addToCart () {
-      console.log('productDisplay addToCart')
-      console.log('numberOfItemsInCart=', this.numberOfItemsInCart)
+     // console.log('productDisplay addToCart')
       this.decreaseQuantity()
       this.$emit('add-to-cart', this.variants[this.selectedVariant].id)
     },
 
     // *** solution ***
     removeFromCart () {
-      const id=this.cart[this.cart.length-1]
+      const id = this.cart[this.cart.length - 1]
       this.cart.pop()
       //console.log(this.variants.find((e)=>e.id===id).quantity)
-      this.variants.find((e)=>e.id===id).quantity += 1
+      this.variants.find((e) => e.id === id).quantity += 1
       //console.log(this.variants.find((e)=>e.id===id).quantity)
     },
     // *** solution ***
@@ -100,6 +102,11 @@ app.component('product-display', {
     },
     decreaseQuantity () {
       this.variants[this.selectedVariant].quantity -= 1
+    },
+    addReview (review) {
+      this.reviews.push(review)
+      // console.log('addReview reviews:', this.reviews)
+
     }
   },
   computed: {
